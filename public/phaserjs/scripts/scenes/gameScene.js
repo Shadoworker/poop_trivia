@@ -21,11 +21,11 @@ var gameScene = new Phaser.Class({
 
 
         // Players
-        this.load.image('player1', './assets/perso1.png');
-        this.load.image('player2', './assets/perso2.png');
-        this.load.image('player3', './assets/perso3.png');
-        this.load.image('player4', './assets/perso4.png');
-        this.load.image('player5', './assets/perso5.png');
+        this.load.image('player1', './assets/perso_1.png');
+        this.load.image('player2', './assets/perso_2.png');
+        this.load.image('player3', './assets/perso_3.png');
+        this.load.image('player4', './assets/perso_4.png');
+        this.load.image('player5', './assets/perso_5.png');
 
 
     },
