@@ -24,7 +24,7 @@ var quizScene = new Phaser.Class({
  
         this.load.image('quiz_bg', './assets/quiz_bg.png');
         // Later set a spritesheet and definr the suitable player
-        this.load.image('selected_player', './assets/Perso1.png');
+        this.load.image('selected_player', './assets/perso_1.png');
         this.load.image('quiz_box', './assets/box1.png');
         this.load.image('answer_box', './assets/button.png');
 
@@ -39,7 +39,6 @@ var quizScene = new Phaser.Class({
     },
         
     onObjectClicked  : function(pointer,gameObject){
-        console.log("ACTIVE ABC---", gameObject) 
      },
 
     create: function() {
