@@ -13,8 +13,9 @@ var gameScene = new Phaser.Class({
     preload: function() {
  
         this.load.image('screen_bg', './assets/screen_base.png');
-        // this.load.image('logo', './assets/phaser3-logo.png');
-        // this.load.image('red', './assets/red.png');
+        
+        this.load.image('btn_bg', './assets/button.png');
+
         this.load.spritesheet('player', './assets/glitch_walker.png', { frameWidth: 104, frameHeight: 114 });
         this.load.image('podium', './assets/podium.png');
 
@@ -40,18 +41,7 @@ var gameScene = new Phaser.Class({
         ).setOrigin(0.5);
     
      
-
-        // var particles = this.add.particles('red');
-    
-        // var emitter = particles.createEmitter({
-        //     speed: 100,
-        //     scale: { start: 1, end: 0 },
-        //     blendMode: 'ADD'
-        // });
-    
-        // var logo = this.physics.add.image(400, 100, 'logo');
-    
-        // this.add.image(0, 0, 'player').setOrigin(0, 0);
+ 
     
         // Animation set
         this.anims.create({
@@ -97,14 +87,36 @@ var gameScene = new Phaser.Class({
         podium5.setScale(0.50, 0.50);
 
 
+
+
+        //Btn Play
+        var playGroup1 = this.add.group();
+        playBox1 = this.add.image(screenW * 0.53, screenH * 0.63, 'btn_bg' );
+        playBox1.setScale(0.35, 0.450).setInteractive();;
+        playText1 = this.add.text(
+            0, 0, "JOUER" , {fontSize: 24, color: "black",fontStyle: "bolder", fontFamily: "Helvetica" }
+        ).setOrigin(0.5, 0.65);
+
+        playGroup1.addMultiple([playBox1, playText1])
+        playGroup1.setXY(screenW * 0.53, screenH * 0.90)
+        playBox1.on('pointerdown', ()=>{
+            // ...
+            swicthScene('quizScene');
+
+        },this);
+
+
+        var _self = this;
     
-    
-        // logo.setVelocity(100, 200);
-        // logo.setBounce(1, 1);
-        // logo.setCollideWorldBounds(true);
-    
-        // emitter.startFollow(logo);
-    
+        function swicthScene(newScene)
+        {
+            _self.scene.start(newScene);
+            _self.scene.bringToTop(newScene);
+            _self.scene.stop(m_currentScene);
+            window.m_currentScene = newScene;
+        }
+
+
     },
     
     update: function() {}

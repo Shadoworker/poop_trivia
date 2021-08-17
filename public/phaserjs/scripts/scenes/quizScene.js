@@ -6,18 +6,25 @@ var quizScene = new Phaser.Class({
     Extends: Phaser.Scene,
     initialize: function() {
         Phaser.Scene.call(this, { "key": "quizScene" });
+
     },
     init: function(data) {
 
+
+        
         this.message = "Gurup";
         this.score = 0;
+        this.m_papers = 0;
+        this.m_corrects = 0;
+        this.m_errors = 0;
 
+        
     },
     preload: function() {
  
         this.load.image('quiz_bg', './assets/quiz_bg.png');
         // Later set a spritesheet and definr the suitable player
-        this.load.image('player', './assets/Perso1.png');
+        this.load.image('selected_player', './assets/Perso1.png');
         this.load.image('quiz_box', './assets/box1.png');
         this.load.image('answer_box', './assets/button.png');
 
@@ -30,36 +37,43 @@ var quizScene = new Phaser.Class({
 
 
     },
+        
+    onObjectClicked  : function(pointer,gameObject){
+        console.log("ACTIVE ABC---", gameObject) 
+     },
+
     create: function() {
         
+        // this.scale.lockOrientation("landscape-primary")
 
         this.input.addPointer(1);
+
+        this.input.on('gameobjectdown',this.onObjectClicked);
 
         this.cameras.main.setBackgroundColor('#000000')
  
         var bg = this.add.image(0, 0, 'quiz_bg');
-        bg.setScale(window.x_scale + 0.1, window.y_scale + 0.1).setInteractive();
+        bg.setScale(window.x_scale + 0.6, window.y_scale + 0.1);
         bg.setOrigin(window.backgroundAnchors[0], window.backgroundAnchors[1]);
-        bg.on('pointerdown', ()=>{
-            // ...
-            // getAnswer();
-            console.log("Next")
-            if(m_currentQuizIndex < 4)
-            {
-                m_currentQuizIndex++;
-                initQuiz();
-            }
-        },this);
+        // bg.on('pointerdown', ()=>{
+        //     // ...
+        //     // getAnswer();
+        //     // console.log("Next")
+        //     // if(m_currentQuizIndex < 4)
+        //     // {
+        //     //     m_currentQuizIndex++;
+        //     //     initQuiz();
+        //     // }
+        // },this);
 
         // Player
-        var player = this.add.image(screenW * 0.15, screenH * 0.85, 'player' );
-        player.setScale(0.150, 0.150)
+        var player = this.add.image(screenW * 0.15, screenH * 0.85, 'selected_player' );
+        player.setScale(0.150, 0.150);
 
-        
      
         // Quiz Box
         var quizBox = this.add.image(screenW * 0.65, screenH * 0.55, 'quiz_box' );
-        quizBox.setScale(0.450, 0.450);
+        quizBox.setScale((0.450 * window.itemScaleRatio), (0.450 * window.itemScaleRatio));
         
 
         
@@ -105,8 +119,6 @@ var quizScene = new Phaser.Class({
                 answer3.destroy(true);
                 answer4.destroy(true);
 
-                // Simulate score here
-                _self.score += 10;
             }
 
             quizQuestion = _self.add.text(
@@ -126,54 +138,70 @@ var quizScene = new Phaser.Class({
             // Answer Block
             var answerGroup1 = _self.add.group();
             answerBox1 = _self.add.image(screenW * 0.53, screenH * 0.63, 'answer_box' );
-            answerBox1.setScale(0.35, 0.450);
+            answerBox1.setScale(0.35, 0.450).setInteractive();;
             answer1 = _self.add.text(
                 0, 0, quiz.answers[0].value , {fontSize: 24, color: "black",fontStyle: "bolder", fontFamily: "Helvetica" }
             ).setOrigin(0.5, 0.65);
 
-             answerGroup1.addMultiple([answerBox1, answer1])
-             answerGroup1.setXY(screenW * 0.53, screenH * 0.63)
-            
-            
-    
+            answerGroup1.addMultiple([answerBox1, answer1])
+            answerGroup1.setXY(screenW * 0.53, screenH * 0.63)
+            answerBox1.on('pointerdown', ()=>{
+                // ...
+                getAnswer(quiz.answers[0].isCorrect);
+                answerBox1.setInteractive(false);
+
+
+            },this);
+
             // Answer Block
             var answerGroup2 = _self.add.group();
             answerBox2 = _self.add.image(0, 0, 'answer_box' );
-            answerBox2.setScale(0.35, 0.450);
+            answerBox2.setScale(0.35, 0.450).setInteractive();;
             answer2 = _self.add.text(
                 0, 0, quiz.answers[1].value, {fontSize: 24, color: "black",fontStyle: "bolder", fontFamily: "Helvetica" }
             ).setOrigin(0.5, 0.65);
             answerGroup2.addMultiple([answerBox2, answer2])
             answerGroup2.setXY(screenW * 0.78, screenH * 0.63);
-    
+            answerBox2.on('pointerdown', ()=>{
+                // ...
+                getAnswer(quiz.answers[1].isCorrect);
+                answerBox2.setInteractive(false);
+
+
+            },this);
 
             // Answer Block
             var answerGroup3 = _self.add.group();
             answerBox3 = _self.add.image(0, 0, 'answer_box' );
-            answerBox3.setScale(0.35, 0.450);
+            answerBox3.setScale(0.35, 0.450).setInteractive();
             answer3 = _self.add.text(
                 0, 0, quiz.answers[2].value, {fontSize: 24, color: "black",fontStyle: "bolder", fontFamily: "Helvetica" }
             ).setOrigin(0.5, 0.65);
             answerGroup3.addMultiple([answerBox3, answer3])
             answerGroup3.setXY(screenW * 0.53, screenH * 0.80);
-    
-                    
-            answer3.on('pointerdown', ()=>{
+            answerBox3.on('pointerdown', ()=>{
                 // ...
-                // getAnswer();
-                console.log("Ans 3")
+                getAnswer(quiz.answers[2].isCorrect);
+                answerBox3.setInteractive(false);
+
 
             },this);
             // Answer Block
             var answerGroup4 = _self.add.group();
             answerBox4 = _self.add.image(0, 0, 'answer_box' );
-            answerBox4.setScale(0.35, 0.450)
+            answerBox4.setScale(0.35, 0.450).setInteractive();
             answer4 = _self.add.text(
                 0, 0, quiz.answers[3].value, {fontSize: 24, color: "black",fontStyle: "bolder", fontFamily: "Helvetica" }
             ).setOrigin(0.5, 0.65);
             answerGroup4.addMultiple([answerBox4, answer4])
             answerGroup4.setXY(screenW * 0.78, screenH * 0.80);
+            answerBox4.on('pointerdown', ()=>{
+                // ...
+                getAnswer(quiz.answers[3].isCorrect);
+                answerBox4.setInteractive(false);
 
+
+            },this);
 
 
             quizGroup.addMultiple([quizQuestion, answerGroup1, answerGroup2, answerGroup3, answerGroup4]);
@@ -186,16 +214,16 @@ var quizScene = new Phaser.Class({
         initQuiz();
 
 
-         // HEADERS
+        // HEADERS
 
         // Header Block - PAPER
         var headerGroupPaper = this.add.group();
         var headerBgPaper = this.add.image(0, 0, 'quiz_header_paper' );
         headerBgPaper.setScale(0.450, 0.450);
-        var headerTextPaper = this.add.text(
-            0, 0, "30", {fontSize: 18, color: "white",fontStyle: "bold", fontFamily: "Helvetica" }
+        this.headerTextPaper = this.add.text(
+            0, 0, this.m_papers, {fontSize: 18, color: "white",fontStyle: "bold", fontFamily: "Helvetica" }
         ).setOrigin(0.5);
-        headerGroupPaper.addMultiple([headerBgPaper, headerTextPaper])
+        headerGroupPaper.addMultiple([headerBgPaper, this.headerTextPaper])
         headerGroupPaper.setXY(screenW * 0.12, screenH * 0.10);  
         headerGroupPaper.propertyValueSet("x", screenW * 0.14, 0 ,1 , 1)
         headerGroupPaper.propertyValueSet("y", screenH * 0.09, 0 ,1 , 1)
@@ -204,10 +232,10 @@ var quizScene = new Phaser.Class({
         var headerGroupCorrect = this.add.group();
         var headerBgCorrect = this.add.image(0, 0, 'quiz_header_correct' );
         headerBgCorrect.setScale(0.450, 0.450);
-        var headerTextCorrect = this.add.text(
-            0, 0, "40", {fontSize: 18, color: "white",fontStyle: "bold", fontFamily: "Helvetica" }
+        this.headerTextCorrect = this.add.text(
+            0, 0, this.m_corrects, {fontSize: 18, color: "white",fontStyle: "bold", fontFamily: "Helvetica" }
         ).setOrigin(0.5);
-        headerGroupCorrect.addMultiple([headerBgCorrect, headerTextCorrect])
+        headerGroupCorrect.addMultiple([headerBgCorrect, this.headerTextCorrect])
         headerGroupCorrect.setXY(screenW * 0.28, screenH * 0.08);  
         headerGroupCorrect.propertyValueSet("x", screenW * 0.29, 0 ,1 , 1)
         headerGroupCorrect.propertyValueSet("y", screenH * 0.095, 0 ,1 , 1)
@@ -217,10 +245,10 @@ var quizScene = new Phaser.Class({
         var headerGroupFalse = this.add.group();
         var headerBgFalse = this.add.image(0, 0, 'quiz_header_false' );
         headerBgFalse.setScale(0.450, 0.450);
-        var headerTextFalse = this.add.text(
-            0, 0, "10", {fontSize: 18, color: "white",fontStyle: "bold", fontFamily: "Helvetica" }
+        this.headerTextFalse = this.add.text(
+            0, 0, this.m_errors, {fontSize: 18, color: "white",fontStyle: "bold", fontFamily: "Helvetica" }
         ).setOrigin(0.5);
-        headerGroupFalse.addMultiple([headerBgFalse, headerTextFalse])
+        headerGroupFalse.addMultiple([headerBgFalse, this.headerTextFalse])
         headerGroupFalse.setXY(screenW * 0.44, screenH * 0.08);  
         headerGroupFalse.propertyValueSet("x", screenW * 0.46, 0 ,1 , 1)
         headerGroupFalse.propertyValueSet("y", screenH * 0.085, 0 ,1 , 1)
@@ -242,24 +270,73 @@ var quizScene = new Phaser.Class({
                 fontSize: 45,
                 color: "white",
                 fontStyle: "bolder",
-                fontFamily: "Impact"
+                fontFamily: "Impact",
+                textAlign:"center"
             }
         ).setOrigin(0.15);
 
         var scoreGroup = this.add.group();
 
         scoreGroup.addMultiple([podium, this.podiumScore])
-        scoreGroup.setXY(screenW * 0.15, screenH * 1.05);
-        scoreGroup.propertyValueSet("y", screenH * 0.85, 0 ,1 , 1)
+        scoreGroup.setXY(screenW * 0.15, screenH * (1.15 - window.scoreGroupYRatio));
+        scoreGroup.propertyValueSet("y", screenH * 0.83, 0 ,1 , 1)
     
 
 
+        function getAnswer(isCorrect)
+        {
+            console.log("Clicked !!! "+ isCorrect);
+
+            if(isCorrect)
+            {
+                // Simulate score here
+                _self.m_corrects +=1;
+                _self.score += 10;
+            }
+            else
+            {
+                _self.m_errors +=1;
+            }
+
+            if(m_currentQuizIndex < 4)
+            {
+                m_currentQuizIndex++;
+                initQuiz();
+                console.log("init")
+            }
+            else
+            {
+                console.log("GAME FINISHED !!!")
+                swicthScene('gameoverScene');
+            }
+        }
  
-    },
+
+
+
+        var _self = this;
     
+        function swicthScene(newScene)
+        {
+            _self.scene.start(newScene);
+            _self.scene.bringToTop(newScene);
+            _self.scene.stop(m_currentScene);
+            window.m_currentScene = newScene;
+        }
+
+
+
+
+    },
+
     update: function() {
 
         this.podiumScore.setText(this.score.toString());
+
+        this.headerTextPaper.setText(this.m_papers.toString());
+        this.headerTextCorrect.setText(this.m_corrects.toString());
+        this.headerTextFalse.setText(this.m_errors.toString());
+
     },
 
     render: function() {
@@ -271,10 +348,6 @@ var quizScene = new Phaser.Class({
 });
 
 
-function getAnswer()
-{
-    console.log("Clicked !!!");
-}
 
 
 

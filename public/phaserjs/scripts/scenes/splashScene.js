@@ -22,10 +22,10 @@ var splashScene = new Phaser.Class({
         bg.setOrigin(window.backgroundAnchors[0], window.backgroundAnchors[1]);
      
     
-        var logo = this.physics.add.image(400, 100, 'logo');
+        var logo = this.physics.add.image(0, 0, 'logo');
     
         logo.setScale(0.30, 0.30);
-        logo.setOrigin(0.5, 0.75);
+        logo.setOrigin(0.5, 0.5);
         
         var particles = this.add.particles('red');
     
@@ -44,12 +44,23 @@ var splashScene = new Phaser.Class({
     
         emitter.startFollow(logo);
 
+        var _self = this;
+    
+        function swicthScene(newScene)
+        {
+            _self.scene.start(newScene);
+            _self.scene.bringToTop(newScene);
+            _self.scene.stop(m_currentScene);
+            window.m_currentScene = newScene;
+        }
+ 
 
         this.time.addEvent({
             delay: 2000,
             loop: false,
             callback: () => {
                 // this.scene.start("gameScene", {message : "Poop Trivia !"});
+                swicthScene('gameScene');
             }
         })
     

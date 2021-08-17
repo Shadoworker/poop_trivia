@@ -77,12 +77,12 @@ window.onload = function() {
    
         Crafty.init(screenW, screenH, document.getElementById('game'));
         Crafty.load(assetsObj, go);
-
+        Crafty.multitouch(true);
 
         function go() {
 
                     
-            Crafty.background('#FFFFFF url(assets/bg2.jpg) no-repeat center center');
+            Crafty.background('#FFFFFF url(assets/screen_base.png) no-repeat center center');
 
             var player1 = Crafty.e('2D, DOM, walker_start, SpriteAnimation')
                 .reel("walking", 1000, [
@@ -129,7 +129,24 @@ window.onload = function() {
             .animate("walking", -1);
 
 
-            }
+
+
+            var myEntity1 = Crafty.e('2D, DOM, Image, Color, Touch')
+            .image("assets/button_slot.png")
+            .attr({x: 100, y: 100, w:200, h:200, z:1 })
+            // .color('black')
+            .bind('TouchStart',function(e){ console.log('big black box was touched', e); });
+
+
+
+
+
+
+
+
+
+
+            } // Go End
 
     });
 
