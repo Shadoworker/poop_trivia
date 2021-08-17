@@ -126,7 +126,7 @@ var gameoverScene = new Phaser.Class({
             ).setOrigin(0.5, 0.65);
 
             answerGroup1.addMultiple([answerBox1, answer1])
-            answerGroup1.setXY(screenW * 0.33, screenH * 0.65)
+            answerGroup1.setXY(screenW * 0.33, screenH * 0.65).setAlpha(0.4)
             answerBox1.on('pointerdown', ()=>{
                 // ...
 
@@ -140,7 +140,7 @@ var gameoverScene = new Phaser.Class({
                 0, 0, "PROFIL", {fontSize: 26, color: "white",fontStyle: "bolder", fontFamily: "Helvetica" }
             ).setOrigin(0.5, 0.65);
             answerGroup2.addMultiple([answerBox2, answer2])
-            answerGroup2.setXY(screenW * 0.58, screenH * 0.65);
+            answerGroup2.setXY(screenW * 0.58, screenH * 0.65).setAlpha(0.4);
             answerBox2.on('pointerdown', ()=>{
                 // ...
 
@@ -158,6 +158,7 @@ var gameoverScene = new Phaser.Class({
             answerGroup3.setXY(screenW * 0.33, screenH * 0.80);
             answerBox3.on('pointerdown', ()=>{
                 // ...
+                m_currentQuizIndex = 0;
                 swicthScene('splashScene');
 
             },this);
@@ -169,7 +170,7 @@ var gameoverScene = new Phaser.Class({
                 0, 0, "QUITTER", {fontSize: 26, color: "white",fontStyle: "bolder", fontFamily: "Helvetica" }
             ).setOrigin(0.5, 0.65);
             answerGroup4.addMultiple([answerBox4, answer4])
-            answerGroup4.setXY(screenW * 0.58, screenH * 0.80);
+            answerGroup4.setXY(screenW * 0.58, screenH * 0.80).setAlpha(0.4);
             answerBox4.on('pointerdown', ()=>{
                 // ...
 

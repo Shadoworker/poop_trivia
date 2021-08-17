@@ -20,6 +20,14 @@ var gameScene = new Phaser.Class({
         this.load.image('podium', './assets/podium.png');
 
 
+        // Players
+        this.load.image('player1', './assets/perso1.png');
+        this.load.image('player2', './assets/perso2.png');
+        this.load.image('player3', './assets/perso3.png');
+        this.load.image('player4', './assets/perso4.png');
+        this.load.image('player5', './assets/perso5.png');
+
+
     },
     create: function() {
         
@@ -54,20 +62,20 @@ var gameScene = new Phaser.Class({
 
         // Players
 
-        var player1 = this.add.sprite(screenW * window.playerPositions[0] , screenH * 0.50 );
-        player1.play('idle');
+        var player1 = this.add.image(screenW * window.playerPositions[0] , screenH * 0.55, 'player1' );
+        player1.setScale(0.045);
     
-        var player2 = this.add.sprite(screenW * window.playerPositions[1] , screenH * 0.50 );
-        player2.play('idle');
+        var player2 = this.add.image(screenW * window.playerPositions[1] , screenH * 0.56, 'player2' );
+        player2.setScale(0.045);
     
-        var player3 = this.add.sprite(screenW * window.playerPositions[2] , screenH * 0.50 );
-        player3.play('idle');
+        var player3 = this.add.image(screenW * window.playerPositions[2] , screenH * 0.56, 'player3' );
+        player3.setScale(0.045);
     
-        var player4 = this.add.sprite(screenW * window.playerPositions[3] , screenH * 0.50 );
-        player4.play('idle');
+        var player4 = this.add.image(screenW * window.playerPositions[3] , screenH * 0.56, 'player4' );
+        player4.setScale(0.045);
     
-        var player5 = this.add.sprite(screenW * window.playerPositions[4] , screenH * 0.50 );
-        player5.play('idle');
+        var player5 = this.add.image(screenW * window.playerPositions[4] , screenH * 0.56, 'player5' );
+        player5.setScale(0.045);
     
         //Podiums
 

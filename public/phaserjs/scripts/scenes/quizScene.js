@@ -1,6 +1,6 @@
 // Our scene
 
-var m_currentQuizIndex = 0;
+window.m_currentQuizIndex = 0;
 var answerBox1;
 var quizScene = new Phaser.Class({
     Extends: Phaser.Scene,
